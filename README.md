@@ -15,6 +15,7 @@ Each chapter will be organized into its own directory, containing Markdown files
 ### Frontend Architectural Patterns
 *   [Component-Driven Development](./Frontend%20Architectural%20Patterns/Component-Driven%20Development.md)
 *   [Smart vs Dumb Components](./Frontend%20Architectural%20Patterns/Smart%20vs%20Dumb%20Components.md)
+*   [Container vs Presentational Pattern](./Frontend%20Architectural%20Patterns/Container%20vs%20Presentational%20Pattern.md)
 
 ## Contribution and Learning:
 
