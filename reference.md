@@ -10,6 +10,7 @@ This file serves as a persistent context for the AI agent in future interactions
     *   A comprehensive explanation of the topic.
     *   Relevant code examples to illustrate concepts.
     *   Attention to every minor detail, ensuring thorough coverage.
+4.  **Update README.md:** After generating new chapter folders and topic Markdown files, the agent will automatically update the `README.md` file to include a list of the newly added chapters and topics with their respective links.
 
 ## How to Use This Context:
 
