@@ -19,6 +19,7 @@ Each chapter will be organized into its own directory, containing Markdown files
 *   [Atomic Design](./Frontend%20Architectural%20Patterns/Atomic%20Design.md)
 *   [State Management Strategies](./Frontend%20Architectural%20Patterns/State-Management-Strategies.md)
 *   [Code Splitting & Lazy Loading](./Frontend%20Architectural%20Patterns/Code-Splitting-Lazy-Loading.md)
+*   [Modular CSS](./Frontend%20Architectural%20Patterns/Modular-CSS.md)
 
 ## Contribution and Learning:
 
