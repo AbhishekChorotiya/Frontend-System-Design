@@ -17,6 +17,7 @@ Each chapter will be organized into its own directory, containing Markdown files
 *   [Smart vs Dumb Components](./Frontend%20Architectural%20Patterns/Smart%20vs%20Dumb%20Components.md)
 *   [Container vs Presentational Pattern](./Frontend%20Architectural%20Patterns/Container%20vs%20Presentational%20Pattern.md)
 *   [Atomic Design](./Frontend%20Architectural%20Patterns/Atomic%20Design.md)
+*   [State Management Strategies](./Frontend%20Architectural%20Patterns/State-Management-Strategies.md)
 
 ## Contribution and Learning:
 
