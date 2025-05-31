@@ -18,6 +18,7 @@ Each chapter will be organized into its own directory, containing Markdown files
 *   [Container vs Presentational Pattern](./Frontend%20Architectural%20Patterns/Container%20vs%20Presentational%20Pattern.md)
 *   [Atomic Design](./Frontend%20Architectural%20Patterns/Atomic%20Design.md)
 *   [State Management Strategies](./Frontend%20Architectural%20Patterns/State-Management-Strategies.md)
+*   [Code Splitting & Lazy Loading](./Frontend%20Architectural%20Patterns/Code-Splitting-Lazy-Loading.md)
 
 ## Contribution and Learning:
 
