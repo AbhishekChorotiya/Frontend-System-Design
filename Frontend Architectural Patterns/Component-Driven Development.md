@@ -219,3 +219,31 @@ In this example, the `Button` component is developed with its own styles and tes
 *   **Prioritize Accessibility (a11y):** Build accessibility considerations into your components from the start.
 
 Component-Driven Development offers a powerful approach to building modern, scalable, and maintainable user interfaces. By focusing on creating well-defined, isolated, and reusable components, teams can significantly improve their development efficiency and the quality of their frontend applications.
+## Common Beginner Doubts or Questions
+
+### How does Component-Driven Development (CDD) differ from just building components in a framework like React or Vue? Isn't that already component-driven?
+
+While modern frameworks like React, Vue, and Angular inherently promote a component-based architecture, Component-Driven Development (CDD) is a *methodology* that goes beyond simply using components. It's a specific workflow and mindset that emphasizes building and testing components in **isolation** before integrating them into the larger application.
+
+Here's the key difference:
+
+*   **Building Components in a Framework (e.g., React):**
+    *   You define UI pieces as components (e.g., a `Button` component, a `Navbar` component).
+    *   These components are typically developed within the context of the main application, often relying on the application's global state, routing, or data fetching mechanisms.
+    *   Testing might involve running the full application or mocking dependencies.
+
+*   **Component-Driven Development (CDD):**
+    *   **Isolation First:** The core of CDD is developing components in a dedicated, isolated environment (like Storybook or Styleguidist) *separate from the main application*. This means the component doesn't know anything about the application's routes, global state, or specific data fetching logic.
+    *   **Focus on States and Props:** In isolation, you explicitly define and test every possible state and variation of a component by passing different props. This ensures the component is robust and behaves predictably under all conditions.
+    *   **Living Documentation:** The isolated environment often doubles as interactive documentation, showcasing all component variations and their usage. This becomes a shared artifact for designers, developers, and QA.
+    *   **Bottom-Up Approach:** You build the smallest, most atomic components first, then combine them to form larger ones, and finally assemble them into full pages. This contrasts with a top-down approach where you might start with pages and then break them down.
+
+**Why CDD is more than just using components:**
+
+1.  **Reduced Complexity:** By isolating components, you reduce the cognitive load. You only focus on one component at a time, without worrying about the rest of the application.
+2.  **Enhanced Reusability:** When components are built in isolation, they are inherently more generic and reusable because they are not tightly coupled to specific application logic.
+3.  **Improved Testability:** Testing components in isolation is much easier and faster. You can test all edge cases and visual regressions without navigating through the entire application.
+4.  **Better Collaboration:** Designers can review components in isolation, providing feedback without needing a fully functional application. Developers can work on components in parallel.
+5.  **Faster Feedback Loop:** Changes to a component can be seen and tested immediately in the isolated environment.
+
+In summary, while frameworks provide the *means* to build components, CDD provides the *methodology* and *tools* to build them more effectively, robustly, and collaboratively by emphasizing isolation and comprehensive state management at the component level. It's about intentionally designing and developing components as independent, reusable building blocks for your UI system.

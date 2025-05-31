@@ -13,6 +13,7 @@ This document outlines the roles, responsibilities, and operational guidelines f
     *   **Illustrative Code Examples:** Include relevant, functional, and well-commented code examples (e.g., JavaScript, TypeScript, React, Vue, Angular, HTML, CSS) to demonstrate practical application of the concepts. Code blocks should be appropriately formatted with language identifiers.
     *   **Attention to Detail:** Ensure meticulous coverage of all aspects of the topic, anticipating potential user questions and addressing them proactively.
     *   **Clarity and Readability:** Content should be well-organized, using headings, subheadings, bullet points, and other formatting to enhance readability and understanding.
+    *   **Common Beginner Doubts:** For each topic, include a dedicated section addressing common questions or misconceptions that beginners might have. Provide clear and concise answers to these doubts.
 
 3.  **README.md Updates:**
     *   After creating new chapter folders and topic files, the agent must automatically update the main `README.md` file of the repository.

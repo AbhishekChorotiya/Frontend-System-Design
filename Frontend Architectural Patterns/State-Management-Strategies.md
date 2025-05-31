@@ -453,3 +453,26 @@ The choice of state management strategy depends on the specific needs of your ap
 *   **Server State (React Query, SWR):** Essential for managing asynchronous data from APIs. These libraries abstract away the complexities of fetching, caching, and synchronizing server data, making your components cleaner and more focused on presentation.
 
 Often, a combination of these strategies is used within a single application. For instance, you might use React Query for server state, Context API for theming, and `useState` for local component state. The key is to choose the simplest solution that meets the requirements for each piece of state.
+## Common Beginner Doubts or Questions
+
+### Should we stop using `useState` and always use global states? What difference does it make?
+
+No, you should **not** stop using `useState` and always use global states. The choice between `useState` (local component state) and global state management (like Redux or Context API) depends entirely on the scope and nature of the data you are managing.
+
+Here's the difference and why both are essential:
+
+*   **`useState` (Local Component State):**
+    *   **Purpose:** Ideal for managing state that is *only relevant to a single component* or a very small, tightly coupled group of components. Examples include form input values, toggle states (e.g., a modal's open/closed state), or temporary UI states.
+    *   **Benefits:** Simplicity, encapsulation, and performance. It's easy to reason about, as the state's lifecycle is tied directly to the component. Changes to local state only trigger re-renders of the component and its immediate children, leading to efficient updates.
+    *   **When to use:** When the data doesn't need to be shared with distant components in the component tree. It's the default and often sufficient choice for most component-level interactions.
+
+*   **Global State (e.g., Redux, Context API, Zustand):**
+    *   **Purpose:** Designed for managing state that needs to be *shared across many components* throughout different parts of your application, regardless of their position in the component tree. Examples include user authentication status, shopping cart data, application-wide settings, or data fetched from a server that multiple parts of the UI depend on.
+    *   **Benefits:** Avoids "prop drilling" (passing props down through many layers of components), provides a single source of truth for shared data, and can offer powerful debugging tools and middleware for complex applications.
+    *   **When to use:** When data needs to be accessed or modified by components that are not directly related in the component hierarchy, or when you need a centralized, predictable way to manage complex application-wide data flows.
+
+**Key Takeaway:**
+
+Using `useState` for local concerns keeps your components simple and performant. Introducing global state management should be a deliberate decision made when `useState` becomes insufficient due to the need for widespread data sharing. Overusing global state for local concerns can lead to unnecessary complexity, boilerplate, and potential performance issues (as global state changes can trigger wider re-renders).
+
+A well-architected frontend application typically uses a combination of both: `useState` for component-specific UI logic and a global state solution for application-wide data.

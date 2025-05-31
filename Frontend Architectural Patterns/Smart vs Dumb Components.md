@@ -164,3 +164,13 @@ export default UserListContainer;
 Separating components into "Smart" (for logic and data) and "Dumb" (for presentation) is a powerful strategy for building cleaner, more organized, and scalable frontend applications. While modern tools and hooks in frameworks like React might offer more flexible ways to manage state and logic within functional components (e.g., via custom hooks), the core principle of separating presentational concerns from business logic remains highly valuable.
 
 **For a deeper dive into the benefits, drawbacks, best practices, and the evolution of this pattern with React Hooks, please consult the [Container vs Presentational Pattern](./Container%20vs%20Presentational%20Pattern.md) document.**
+## Common Beginner Doubts or Questions
+
+### Is "Smart vs. Dumb Components" the same as "Container vs. Presentational Components"?
+
+Yes, these terms are largely synonymous and refer to the same architectural pattern.
+
+*   **"Dumb Components"** are equivalent to **"Presentational Components"**: They focus purely on rendering UI based on the props they receive. They are "dumb" because they don't know where their data comes from or how actions are handled; they just display what they're told.
+*   **"Smart Components"** are equivalent to **"Container Components"**: They are "smart" because they contain the application logic, manage state, fetch data, and define behavior, then pass these down to their "dumb" children.
+
+The "Smart vs. Dumb" terminology is perhaps more intuitive for beginners, highlighting the "brain" (logic) versus "body" (presentation) aspect. While the strict implementation of this pattern has evolved with modern React Hooks (where logic might be extracted into custom hooks rather than dedicated container components), the underlying principle of separating concerns remains a fundamental best practice for building maintainable and reusable UIs. For a more in-depth discussion, refer to the [Container vs Presentational Pattern](./Container%20vs%20Presentational%20Pattern.md) document.
