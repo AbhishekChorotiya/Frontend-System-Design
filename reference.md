@@ -11,6 +11,7 @@ This file serves as a persistent context for the AI agent in future interactions
     *   Relevant code examples to illustrate concepts.
     *   Attention to every minor detail, ensuring thorough coverage.
 4.  **Update README.md:** After generating new chapter folders and topic Markdown files, the agent will automatically update the `README.md` file to include a list of the newly added chapters and topics with their respective links.
+5.  **Automate Git Push:** After successfully generating new chapter folders and topic Markdown files, and updating the `README.md`, the agent will automatically stage, commit, and push the changes to the GitHub repository with a descriptive commit message.
 
 ## How to Use This Context:
 
