@@ -21,6 +21,9 @@ Each chapter will be organized into its own directory, containing Markdown files
 *   [Code Splitting & Lazy Loading](./Frontend%20Architectural%20Patterns/Code-Splitting-Lazy-Loading.md)
 *   [Modular CSS](./Frontend%20Architectural%20Patterns/Modular-CSS.md)
 
+### Performance Optimization
+*   [Critical Rendering Path](./Performance-Optimization/Critical-Rendering-Path.md)
+
 ## Contribution and Learning:
 
 This repository is intended for personal learning and can be a valuable resource for anyone looking to deepen their understanding of frontend system design principles.
