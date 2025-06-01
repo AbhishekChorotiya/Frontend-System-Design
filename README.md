@@ -23,6 +23,7 @@ Each chapter will be organized into its own directory, containing Markdown files
 
 ### Performance Optimization
 *   [Critical Rendering Path](./Performance-Optimization/Critical-Rendering-Path.md)
+*   [Tree Shaking](./Performance-Optimization/Tree-Shaking.md)
 
 ### Frontend Security
 *   [Cross-Site Scripting (XSS)](./Frontend-Security/Cross-Site-Scripting-XSS.md)
