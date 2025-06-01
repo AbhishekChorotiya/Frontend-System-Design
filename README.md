@@ -27,6 +27,9 @@ Each chapter will be organized into its own directory, containing Markdown files
 ### Frontend Security
 *   [Cross-Site Scripting (XSS)](./Frontend-Security/Cross-Site-Scripting-XSS.md)
 
+### API Integration & Data Handling
+*   [REST vs GraphQL](./API-Integration-Data-Handling/REST-vs-GraphQL.md)
+
 ## Contribution and Learning:
 
 This repository is intended for personal learning and can be a valuable resource for anyone looking to deepen their understanding of frontend system design principles.
