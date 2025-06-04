@@ -28,6 +28,7 @@ Each chapter will be organized into its own directory, containing Markdown files
 
 ### Frontend Security
 *   [Cross-Site Scripting (XSS)](./Frontend-Security/Cross-Site-Scripting-XSS.md)
+*   [Cross-Site Request Forgery (CSRF)](./Frontend-Security/Cross-Site-Request-Forgery-CSRF.md)
 
 ### API Integration & Data Handling
 *   [REST vs GraphQL](./API-Integration-Data-Handling/REST-vs-GraphQL.md)
