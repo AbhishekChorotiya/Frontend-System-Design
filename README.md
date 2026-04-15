@@ -36,6 +36,10 @@ A structured, in-depth knowledge base covering frontend system design concepts -
 | Topic | Description |
 |-------|-------------|
 | [REST vs GraphQL](./API-Integration-Data-Handling/REST-vs-GraphQL.md) | Comparison of REST and GraphQL: architecture, implementation, and migration strategies |
+| [WebSockets for Real-Time Apps](./API-Integration-Data-Handling/WebSockets-For-Real-Time-Apps.md) | WebSocket protocol, connection management, reconnection patterns, and real-time architecture |
+| [Pagination, Filtering, and Sorting](./API-Integration-Data-Handling/Pagination-Filtering-Sorting.md) | Offset vs cursor pagination, client/server filtering and sorting, URL-synced state, infinite scroll |
+| [File Upload Patterns](./API-Integration-Data-Handling/File-Upload-Patterns.md) | Upload strategies, chunked/resumable uploads, presigned URLs, progress tracking, and client-side file handling |
+| [API Retries, Timeouts, and Backoff Strategies](./API-Integration-Data-Handling/API-Retries-Timeouts-Backoff-Strategies.md) | Retry mechanisms, timeout configuration, exponential backoff with jitter, and circuit breaker patterns |
 
 ## Content Format
 
