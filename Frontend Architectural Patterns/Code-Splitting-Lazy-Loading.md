@@ -2,6 +2,8 @@
 
 Code Splitting and Lazy Loading are two powerful techniques used in modern web development to improve the initial load time and overall performance of applications. They achieve this by reducing the amount of JavaScript that needs to be downloaded, parsed, and executed when a user first visits a page.
 
+> **Think of it like a buffet restaurant.** Without code splitting, it is like the kitchen preparing every single dish on the menu before opening the doors — guests wait forever and most of the food goes cold before anyone touches it. Code splitting turns it into a live-cooking station: the most popular dishes are ready when doors open (your initial bundle), and everything else is cooked on demand when a guest actually orders it (lazy loading). You still have the full menu, but you are only spending effort on what people actually want right now.
+
 ## Code Splitting
 
 **Definition:** Code splitting is the process of breaking down a large JavaScript bundle into smaller, more manageable chunks. Instead of sending one massive file to the client, the application only loads the code necessary for the initial view or a specific route. As the user navigates or interacts with the application, additional chunks are loaded on demand.

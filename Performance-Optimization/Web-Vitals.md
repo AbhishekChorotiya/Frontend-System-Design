@@ -4,7 +4,7 @@
 - [Introduction](#introduction)
 - [Core Web Vitals](#core-web-vitals)
 - [Largest Contentful Paint (LCP)](#largest-contentful-paint-lcp)
-- [First Input Delay (FID)](#first-input-delay-fid)
+- [Interaction to Next Paint (INP)](#interaction-to-next-paint-inp)
 - [Cumulative Layout Shift (CLS)](#cumulative-layout-shift-cls)
 - [Other Important Web Vitals](#other-important-web-vitals)
 - [Measuring Web Vitals](#measuring-web-vitals)
@@ -20,12 +20,14 @@ Web Vitals are a set of metrics introduced by Google to measure real-world user 
 
 The initiative aims to simplify the landscape of performance metrics by providing unified guidance for quality signals that are essential to delivering a great user experience on the web.
 
+> **Think of it like a restaurant review.** Web Vitals are the equivalent of rating a restaurant on three things: how quickly food arrives at your table (LCP — loading), how fast the waiter responds when you call them (INP — interactivity), and whether the table settings keep shifting around while you eat (CLS — visual stability). Just as a restaurant needs all three to get a great review, your website needs to score well on all three Core Web Vitals for a good user experience.
+
 ## Core Web Vitals
 
 Core Web Vitals are a subset of Web Vitals that apply to all web pages and are considered the most important metrics for user experience. As of 2024, there are three Core Web Vitals:
 
 ### 1. Largest Contentful Paint (LCP) - Loading Performance
-### 2. First Input Delay (FID) - Interactivity  
+### 2. Interaction to Next Paint (INP) - Interactivity  
 ### 3. Cumulative Layout Shift (CLS) - Visual Stability
 
 These metrics are also used as ranking factors in Google's search algorithm, making them crucial for both user experience and SEO.
@@ -113,53 +115,62 @@ if (typeof PerformanceObserver !== 'undefined') {
 </picture>
 ```
 
-## First Input Delay (FID)
+## Interaction to Next Paint (INP)
 
-### What is FID?
+### What is INP?
 
-First Input Delay measures the time from when a user first interacts with your page (clicks a link, taps a button, etc.) to the time when the browser is actually able to respond to that interaction.
+Interaction to Next Paint measures the overall responsiveness of a page to user interactions. It observes the latency of **all** click, tap, and keyboard interactions throughout the entire lifespan of a page and reports the worst interaction (ignoring outliers). A low INP means the page is consistently responsive to user input.
 
-### FID Thresholds
+> **Note:** INP replaced First Input Delay (FID) as a Core Web Vital in March 2024. While FID only measured the *first* interaction's input delay, INP captures the *full duration* of every interaction (from input to the next paint), giving a much more complete picture of a page's responsiveness.
 
-- **Good**: 100 milliseconds or less
-- **Needs Improvement**: 100 to 300 milliseconds
-- **Poor**: More than 300 milliseconds
+### INP Thresholds
 
-### Code Example: Measuring FID
+- **Good**: 200 milliseconds or less
+- **Needs Improvement**: 200 to 500 milliseconds
+- **Poor**: More than 500 milliseconds
+
+### Code Example: Measuring INP
 
 ```javascript
-import { getFID } from 'web-vitals';
+// Using the web-vitals library (v3+)
+import { onINP } from 'web-vitals';
 
-getFID((metric) => {
-  console.log('FID:', metric);
-  
-  // Send to analytics with additional context
+onINP((metric) => {
+  console.log('INP:', metric);
+
+  // Send to analytics
   gtag('event', 'web_vitals', {
     event_category: 'Web Vitals',
-    event_action: 'FID',
+    event_action: 'INP',
     value: Math.round(metric.value),
     custom_parameter_1: metric.id,
-    custom_parameter_2: metric.name,
   });
 });
 
-// Manual FID measurement
-function measureFID() {
+// Manual INP measurement using PerformanceObserver
+function measureINP() {
+  let worstLatency = 0;
+
   const observer = new PerformanceObserver((list) => {
     for (const entry of list.getEntries()) {
-      if (entry.name === 'first-input') {
-        const fid = entry.processingStart - entry.startTime;
-        console.log('FID:', fid);
-        sendToAnalytics('FID', fid);
+      // INP considers the full duration: input delay + processing + presentation delay
+      const duration = entry.duration;
+      if (duration > worstLatency) {
+        worstLatency = duration;
+        console.log('New worst interaction:', {
+          duration,
+          type: entry.name,
+          target: entry.target,
+        });
       }
     }
   });
-  
-  observer.observe({ type: 'first-input', buffered: true });
+
+  observer.observe({ type: 'event', buffered: true, durationThreshold: 16 });
 }
 ```
 
-### FID Optimization Techniques
+### INP Optimization Techniques
 
 ```javascript
 // 1. Code splitting to reduce main thread blocking
@@ -178,37 +189,35 @@ function performNonCriticalTask() {
   }
 }
 
-// 3. Break up long tasks
-function processLargeArray(array) {
+// 3. Break up long tasks using scheduler.yield() (modern) or setTimeout
+async function processLargeArray(array) {
   const chunkSize = 100;
-  let index = 0;
   
-  function processChunk() {
-    const endIndex = Math.min(index + chunkSize, array.length);
+  for (let i = 0; i < array.length; i += chunkSize) {
+    const chunk = array.slice(i, i + chunkSize);
+    chunk.forEach(item => processItem(item));
     
-    for (let i = index; i < endIndex; i++) {
-      // Process array item
-      processItem(array[i]);
-    }
-    
-    index = endIndex;
-    
-    if (index < array.length) {
-      // Use setTimeout to yield control back to the browser
-      setTimeout(processChunk, 0);
+    // Yield to the main thread between chunks so the browser
+    // can respond to user input
+    if (typeof scheduler !== 'undefined' && scheduler.yield) {
+      await scheduler.yield();
+    } else {
+      await new Promise(resolve => setTimeout(resolve, 0));
     }
   }
-  
-  processChunk();
 }
 
-// 4. Optimize event handlers
-const debouncedHandler = debounce((event) => {
-  // Handle the event
-  handleUserInput(event);
-}, 100);
-
-document.addEventListener('input', debouncedHandler);
+// 4. Optimize event handlers — avoid layout thrashing
+document.addEventListener('click', (event) => {
+  // Read layout properties first (batched reads)
+  const scrollTop = document.documentElement.scrollTop;
+  const rect = event.target.getBoundingClientRect();
+  
+  // Then perform writes
+  requestAnimationFrame(() => {
+    updateUI(scrollTop, rect);
+  });
+});
 ```
 
 ## Cumulative Layout Shift (CLS)
@@ -354,26 +363,41 @@ getFCP((metric) => {
 
 ### Time to Interactive (TTI)
 
-Measures when the page becomes fully interactive.
+Measures when the page becomes fully interactive. TTI is a **lab-only metric** — it is measured via tools like Lighthouse and is **not** available through the `web-vitals` npm library or field data collection.
 
 ```javascript
-import { getTTI } from 'web-vitals';
-
-getTTI((metric) => {
-  console.log('TTI:', metric.value);
-});
+// TTI is NOT available in the web-vitals library.
+// Measure TTI using Lighthouse or the Chrome DevTools Performance panel.
+//
+// Programmatically via Lighthouse Node module:
+// const lighthouse = require('lighthouse');
+// const result = await lighthouse(url, options);
+// console.log('TTI:', result.lhr.audits['interactive'].numericValue);
 ```
 
 ### Total Blocking Time (TBT)
 
-Measures the total amount of time between FCP and TTI where the main thread was blocked.
+Measures the total amount of time between FCP and TTI where the main thread was blocked for long enough to prevent input responsiveness. TBT is also a **lab-only metric** and is not available through the `web-vitals` library.
 
 ```javascript
-import { getTBT } from 'web-vitals';
+// TBT is NOT available in the web-vitals library.
+// Measure TBT using Lighthouse or WebPageTest.
+//
+// You can approximate long-task blocking in the browser using PerformanceObserver:
+function measureLongTasks() {
+  const observer = new PerformanceObserver((list) => {
+    let totalBlockingTime = 0;
+    for (const entry of list.getEntries()) {
+      // Any task longer than 50ms contributes to blocking time
+      if (entry.duration > 50) {
+        totalBlockingTime += entry.duration - 50;
+      }
+    }
+    console.log('Approximate blocking time:', totalBlockingTime, 'ms');
+  });
 
-getTBT((metric) => {
-  console.log('TBT:', metric.value);
-});
+  observer.observe({ type: 'longtask', buffered: true });
+}
 ```
 
 ## Measuring Web Vitals
@@ -383,7 +407,7 @@ getTBT((metric) => {
 ```javascript
 // Install: npm install web-vitals
 
-import { getCLS, getFID, getFCP, getLCP, getTTI } from 'web-vitals';
+import { onCLS, onINP, onFCP, onLCP, onTTFB } from 'web-vitals';
 
 function sendToAnalytics(metric) {
   // Send to your analytics service
@@ -396,14 +420,14 @@ function sendToAnalytics(metric) {
   });
 }
 
-// Measure all Core Web Vitals
-getCLS(sendToAnalytics);
-getFID(sendToAnalytics);
-getLCP(sendToAnalytics);
+// Measure all Core Web Vitals (web-vitals v4+)
+onCLS(sendToAnalytics);
+onINP(sendToAnalytics);
+onLCP(sendToAnalytics);
 
 // Measure other Web Vitals
-getFCP(sendToAnalytics);
-getTTI(sendToAnalytics);
+onFCP(sendToAnalytics);
+onTTFB(sendToAnalytics);
 ```
 
 ### Custom Analytics Implementation
@@ -419,7 +443,7 @@ class WebVitalsTracker {
   initializeTracking() {
     // Track Core Web Vitals
     this.trackLCP();
-    this.trackFID();
+    this.trackINP();
     this.trackCLS();
     
     // Send metrics when page is about to unload
@@ -445,16 +469,17 @@ class WebVitalsTracker {
     observer.observe({ type: 'largest-contentful-paint', buffered: true });
   }
   
-  trackFID() {
+  trackINP() {
     const observer = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
-        if (entry.name === 'first-input') {
-          this.metrics.fid = entry.processingStart - entry.startTime;
+        const duration = entry.duration;
+        if (!this.metrics.inp || duration > this.metrics.inp) {
+          this.metrics.inp = duration;
         }
       }
     });
     
-    observer.observe({ type: 'first-input', buffered: true });
+    observer.observe({ type: 'event', buffered: true, durationThreshold: 16 });
   }
   
   trackCLS() {
@@ -984,4 +1009,67 @@ console.log('SEO Strategy: Focus on content quality first, then optimize Web Vit
 
 ### Q4: Should I optimize for lab data or field data?
 
-**Answer:** Both are important, but prioritize field data
+**Answer:** Both are important, but prioritize field data because it reflects what real users actually experience:
+
+```javascript
+// Understanding lab vs field data
+const dataComparison = {
+  labData: {
+    source: 'Lighthouse, WebPageTest, Chrome DevTools',
+    pros: ['Reproducible', 'Controlled environment', 'Good for debugging'],
+    cons: ['Does not reflect real user conditions', 'Single device/network profile'],
+    bestFor: 'Diagnosing issues and testing fixes before deployment'
+  },
+  fieldData: {
+    source: 'Chrome User Experience Report (CrUX), web-vitals library, RUM tools',
+    pros: ['Real user conditions', 'Diverse devices and networks', 'Reflects actual experience'],
+    cons: ['Harder to reproduce issues', 'Requires traffic volume for data'],
+    bestFor: 'Understanding real user experience and tracking improvements over time'
+  }
+};
+
+// Strategy: Use lab data to debug, field data to prioritize
+console.log('Start with field data to find problems, use lab data to fix them');
+```
+
+## Best Practices
+
+### 1. Monitor Continuously
+- Set up Real User Monitoring (RUM) to track Core Web Vitals from real users
+- Use the `web-vitals` library to collect field data and send it to your analytics
+- Set up alerts for when metrics cross "Needs Improvement" thresholds
+
+### 2. Optimize for the 75th Percentile
+- Google evaluates Core Web Vitals at the **75th percentile** — meaning 75% of page visits must meet the "Good" threshold
+- Do not optimize for averages; focus on the long tail of slower experiences
+
+### 3. Test on Real Devices
+- Lab testing on a high-end laptop does not represent your users
+- Use Chrome DevTools device emulation with CPU throttling (4x slowdown) and network throttling (Slow 3G)
+- Test on physical mid-range Android devices when possible
+
+### 4. Prioritize by Impact
+- Fix the worst-performing metric first
+- LCP issues often have the highest user-visible impact
+- CLS fixes are usually the quickest wins (add dimensions to images, reserve ad space)
+
+### 5. Avoid Regressions
+- Include Web Vitals checks in your CI/CD pipeline using Lighthouse CI
+- Monitor field data after every deployment
+- Use performance budgets to catch regressions before they ship
+
+```javascript
+// Example: Lighthouse CI budget configuration (lighthouserc.json)
+const lighthouseBudget = {
+  ci: {
+    assert: {
+      assertions: {
+        'largest-contentful-paint': ['error', { maxNumericValue: 2500 }],
+        'interactive': ['error', { maxNumericValue: 3800 }],
+        'cumulative-layout-shift': ['error', { maxNumericValue: 0.1 }],
+        'total-blocking-time': ['warn', { maxNumericValue: 200 }]
+      }
+    }
+  }
+};
+```

@@ -7,6 +7,8 @@ The Container vs. Presentational Pattern, also known as "Smart vs. Dumb Componen
 
 This separation aims to create a more understandable, reusable, and maintainable codebase.
 
+> **Think of it like a theater production.** Presentational components are the actors — they know how to look, move, and deliver lines, but they do not decide *what* to say. Container components are the directors — they decide what scene to run, which props to hand the actors, and how to respond when the audience reacts. By separating these roles, you can recast actors (swap UI) without rewriting the script, or change the story (logic) without retraining the performers.
+
 ## Presentational Components (Dumb Components / UI Components)
 
 Presentational components are primarily concerned with the **visual representation** of data and user interface elements. They are the "look" part of your application.
@@ -261,7 +263,7 @@ In this scenario, `UserProfile` uses `useUserData` to fetch data, embodying cont
 
 *   **Smart vs. Dumb Components:** These are alternative names for Container vs. Presentational components, respectively.
 *   **Component-Driven Development (CDD):** CDD often involves building a library of presentational components in isolation (e.g., using Storybook). These components are then consumed by containers or components using custom hooks to integrate them into the application.
-*   **Single Responsibility Principle (SRP):** This pattern is an. application of SRP to UI components, where presentational components are responsible for presentation, and containers (or custom hooks) are responsible for logic and data.
+*   **Single Responsibility Principle (SRP):** This pattern is an application of SRP to UI components, where presentational components are responsible for presentation, and containers (or custom hooks) are responsible for logic and data.
 *   **State Management Libraries (Redux, Zustand, etc.):** Container components often serve as the bridge between these state management libraries and the presentational components, subscribing to state changes and dispatching actions.
 
 In summary, the Container vs. Presentational Pattern (and its modern evolution with hooks) provides a valuable mental model and practical approach for structuring frontend applications. It promotes a clean separation of concerns, leading to more robust, reusable, and maintainable codebases, even as implementation details adapt with new framework features.

@@ -18,6 +18,8 @@ Cross-Site Request Forgery (CSRF) is a web security vulnerability that allows an
 
 CSRF attacks exploit the trust that a web application has in a user's browser, leveraging the fact that browsers automatically include credentials (cookies, authentication tokens) with requests to a domain.
 
+> **Think of it like someone forging your signature.** Imagine you are logged into your bank (you have a valid session cookie). A CSRF attack is like someone handing you a pre-filled form that says "Transfer $1,000 to Eve" and tricking you into signing it without reading it. Your bank sees your valid signature (cookie) and processes the transfer. The defense? The bank gives you a unique, secret stamp (CSRF token) that only the real form has — any forged form will be missing the stamp and get rejected.
+
 ## What is CSRF?
 
 CSRF is an attack that forces an end user to execute unwanted actions on a web application in which they're currently authenticated. With a little help of social engineering (such as sending a link via email or chat), an attacker may trick the users of a web application into executing actions of the attacker's choosing.
@@ -120,6 +122,10 @@ The most common and effective defense mechanism:
 #### Server-side Implementation:
 ```javascript
 // Express.js with csurf middleware
+// ⚠️ NOTE: The `csurf` package was deprecated in September 2022 due to
+// security concerns. Consider alternatives such as `csrf-csrf`, `lusca`,
+// or implementing CSRF protection manually (shown further below).
+// This example is kept for reference purposes.
 const csrf = require('csurf');
 const csrfProtection = csrf({ cookie: true });
 

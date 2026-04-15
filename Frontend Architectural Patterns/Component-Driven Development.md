@@ -2,6 +2,8 @@
 
 Component-Driven Development (CDD) is a development methodology that focuses on building user interfaces (UIs) from the bottom up, starting with individual UI components and progressively assembling them to create complex pages and applications. This approach emphasizes isolation, reusability, and testability of UI components.
 
+> **Think of it like manufacturing car parts.** Each component — a door, an engine, a dashboard — is designed, tested, and quality-checked in isolation before it ever goes onto the assembly line. A door does not need the whole car to prove it opens and closes correctly. Component-Driven Development works the same way: you build and test each UI piece independently, then assemble them into a complete application knowing each part already works.
+
 ## Core Principles of CDD:
 
 1.  **Modularity & Encapsulation:** Components are self-contained units with well-defined interfaces (props) and responsibilities. Their internal implementation details are hidden, promoting encapsulation.

@@ -7,6 +7,8 @@ This document explores three popular methodologies for achieving Modular CSS:
 2.  **BEM (Block, Element, Modifier)**
 3.  **SCSS Modules (or CSS Modules with Sass)**
 
+> **Think of it like a wardrobe organizer.** Without modular CSS, your styles are like throwing all your clothes into one big pile — finding the right shirt means digging through everything, and pulling one thing out often drags others with it. Modular CSS is like having labeled drawers and compartments: each component gets its own drawer, styles do not leak between drawers, and you can rearrange or remove one drawer without messing up the rest.
+
 ---
 
 ## 1. CSS-in-JS
@@ -37,7 +39,7 @@ CSS-in-JS is a technique where CSS is written directly within JavaScript files, 
 ### Drawbacks:
 
 *   **Learning Curve:** Requires understanding new libraries and concepts.
-*   **Performance Overhead:** Can introduce a runtime overhead due_to_style computation and injection, though many libraries are highly optimized.
+*   **Performance Overhead:** Can introduce a runtime overhead due to style computation and injection, though many libraries are highly optimized.
 *   **Bundle Size:** Can increase JavaScript bundle size if not managed carefully.
 *   **Tooling:** Might require specific tooling or Babel plugins.
 *   **CSS Extraction Complexity:** Server-side rendering (SSR) and critical CSS extraction can sometimes be complex to set up.

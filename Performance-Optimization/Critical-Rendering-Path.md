@@ -2,6 +2,8 @@
 
 The Critical Rendering Path (CRP) refers to the sequence of steps the browser goes through to convert HTML, CSS, and JavaScript into pixels on the screen. Optimizing the CRP is crucial for improving perceived page load speed and user experience. Understanding and optimizing this path means ensuring that the browser can render the initial view of a page as quickly as possible.
 
+> **Think of it like building a house.** The browser rendering a page is like a construction crew building a house from blueprints. First, they read the architectural plans (parse HTML to build the DOM). Then they check the interior design specs (parse CSS to build the CSSOM). Next, they combine both to figure out what goes where (the Render Tree). Then they measure and mark the lot (Layout). Finally, they paint the walls and install everything (Paint). Anything that blocks the blueprints or design specs — like waiting for a special material to arrive — delays the entire build.
+
 ## Core Concepts
 
 The browser's rendering process involves several key stages:

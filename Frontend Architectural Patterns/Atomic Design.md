@@ -2,6 +2,8 @@
 
 Atomic Design is a methodology for creating design systems. It's composed of five distinct stages, working together to create interface design systems in a more deliberate and hierarchical manner. The five stages are:
 
+> **Think of it like building with LEGO bricks.** An atom is a single LEGO piece — a button, an icon, a label. A molecule is a small pre-built assembly — like a mini door or a window. An organism is a recognizable structure — a house wall with windows and a door. Templates are the instruction booklet showing where each structure goes, and pages are the finished model sitting on your shelf. Just like LEGO, you build big things from small, reusable pieces, and you can always swap out a window without rebuilding the whole house.
+
 1.  **Atoms**: These are the basic building blocks of matter. Applied to web interfaces, atoms are our HTML tags, such as a form label, an input, or a button. They can also include more abstract elements like color palettes, fonts, and animations.
     *   **Example (HTML):**
         ```html
@@ -280,3 +282,32 @@ Here's why and how:
 *   **Flexibility:** Be pragmatic. If a component doesn't fit perfectly into a category, don't force it. The goal is organization and reusability, not rigid adherence to a dogma.
 
 In essence, Atomic Design provides a valuable mental model for structuring UIs. Even if you don't implement a full-blown design system for a small project, adopting its principles can significantly improve your component architecture and prepare your codebase for future growth.
+
+### How do I decide if something is an atom, molecule, or organism?
+
+A common source of confusion. Here is a practical rule of thumb:
+
+*   **Atom:** Can it be broken down further while still being useful? If not, it is an atom. A button, an input field, a label, an icon — these are atoms. They are the smallest functional units of your UI.
+*   **Molecule:** Does it combine two or more atoms to do one specific thing? A search bar (label + input + button) or a form field (label + input + error message) are molecules. They have a single clear purpose.
+*   **Organism:** Does it combine multiple molecules and/or atoms into a recognizable section of the page? A navigation header (logo + nav links + search bar) or a product card grid are organisms. They form distinct, meaningful sections of the interface.
+
+If you are unsure, ask yourself: "If I removed this from the page, would the user notice a whole *section* missing (organism), a small *widget* missing (molecule), or just a single *element* missing (atom)?"
+
+### What is the difference between a template and a page? They look the same.
+
+They look similar but serve different purposes:
+
+*   **Template:** Defines the *structure* and *layout* — where things go, how much space they take, how they relate to each other. It uses placeholder content like "[Hero Image]" or "[Product Title]". Think of it as the wireframe or blueprint.
+*   **Page:** Is a *specific instance* of a template filled with real content — actual images, real product names, live data. It is what users actually see.
+
+The distinction matters because one template can produce many different pages. For example, a "Blog Post Template" defines the layout once, but it generates hundreds of individual blog post pages, each with different content. By designing at the template level, you ensure consistency across all pages.
+
+### Do I need to use all five levels (atoms, molecules, organisms, templates, pages)?
+
+No. Atomic Design is a mental model, not a rigid set of rules. In practice:
+
+*   Most teams focus heavily on **atoms, molecules, and organisms** — these map directly to reusable components in frameworks like React, Vue, or Angular.
+*   **Templates** are often implicit in your routing and layout components rather than being explicitly labeled as "templates."
+*   **Pages** are typically your route-level components that compose everything together.
+
+Use as many or as few levels as make sense for your project. The core idea — building from small, reusable pieces that compose into larger structures — is more important than strictly categorizing everything into five buckets.

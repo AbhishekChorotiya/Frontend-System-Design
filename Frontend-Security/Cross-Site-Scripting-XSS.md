@@ -2,6 +2,8 @@
 
 Cross-Site Scripting (XSS) is a type of security vulnerability typically found in web applications. XSS attacks enable attackers to inject client-side scripts into web pages viewed by other users. A cross-site scripting vulnerability may be used by attackers to bypass access controls such as the same-origin policy.
 
+> **Think of it like a suggestion box at work.** Normally, employees write suggestions and managers read them — harmless. But what if someone slips in a note that says "Give me admin access" and the system treats it as a legitimate command? That is XSS in a nutshell. An attacker injects malicious code (the fake suggestion) into a website, and the browser — trusting that everything on the page is legitimate — executes it. The key defense is treating all user input as text to display, never as instructions to follow.
+
 ## Core Concepts
 
 XSS attacks occur when an application includes untrusted data in a new web page without proper validation or escaping, or when it updates an existing web page with user-supplied data using a browser API that can create HTML or JavaScript.

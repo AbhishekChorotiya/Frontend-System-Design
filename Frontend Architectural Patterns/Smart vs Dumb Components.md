@@ -8,6 +8,8 @@ For a comprehensive understanding of this architectural approach, including deta
 
 Below is a summary of the core concepts:
 
+> **Think of it like a puppet show.** Dumb (presentational) components are the puppets — they look great and perform beautifully, but they only do what the puppeteer tells them. Smart components are the puppeteers — they know the story, pull the strings, and decide what happens next. The puppets do not know or care about the plot; they just respond to the hands controlling them. This separation means you can use the same puppet in a comedy or a drama — its appearance stays the same, only the story changes.
+
 ## Dumb (Presentational) Components
 
 Dumb components (also known as Presentational Components or UI Components) are primarily concerned with **how things look**.
