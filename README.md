@@ -2,6 +2,8 @@
 
 A structured, in-depth knowledge base covering frontend system design concepts -- from architectural patterns and performance optimization to security and API design. Each topic includes clear explanations, real-world code examples across React/Vue/Angular, best practices, and a dedicated Q&A section addressing common beginner doubts.
 
+**[Read online](https://abhishekchorotiya.github.io/Frontend-System-Design/)** -- browse all topics with search, dark mode, and syntax-highlighted code.
+
 ## Topics
 
 ### Frontend Architectural Patterns
