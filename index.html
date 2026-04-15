@@ -493,6 +493,12 @@
     .article strong { font-weight: 600; color: var(--text-primary); }
     .article em { font-style: italic; }
 
+    .heading-anchor {
+      color: inherit;
+      text-decoration: none;
+    }
+    .heading-anchor:hover { text-decoration: underline; }
+
     .article blockquote {
       margin: 20px 0;
       padding: 16px 20px;
@@ -798,7 +804,19 @@
     });
 
     // ── Configure marked ─────────────────────────────
+    function slugify(text) {
+      return text.toLowerCase().replace(/<[^>]*>/g, '').replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
+    }
+
+    const renderer = new marked.Renderer();
+    renderer.heading = function ({ text, depth }) {
+      const raw = typeof text === 'string' ? text : (text.raw || text.text || String(text));
+      const slug = slugify(raw);
+      return `<h${depth} id="${slug}"><a class="heading-anchor" href="#${slug}">${raw}</a></h${depth}>`;
+    };
+
     marked.setOptions({
+      renderer: renderer,
       highlight: function (code, lang) {
         if (lang && hljs.getLanguage(lang)) {
           return hljs.highlight(code, { language: lang }).value;
@@ -884,6 +902,18 @@
           cache[path] = md;
         }
         contentEl.innerHTML = `<div class="article">${marked.parse(md)}</div>`;
+
+        // Handle in-article heading anchor clicks
+        contentEl.querySelectorAll('.heading-anchor').forEach(a => {
+          a.addEventListener('click', (e) => {
+            e.preventDefault();
+            const id = a.getAttribute('href').slice(1);
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+            history.replaceState(null, '', a.getAttribute('href'));
+          });
+        });
+
         window.scrollTo({ top: 0 });
       } catch (err) {
         contentEl.innerHTML = `
@@ -933,10 +963,21 @@
     // ── Handle hash navigation ───────────────────────
     function handleHash() {
       const hash = decodeURIComponent(location.hash.slice(1));
-      if (hash) {
+      if (!hash) { showWelcome(); breadcrumbEl.textContent = 'Select a topic'; return; }
+
+      // Check if it's a topic path (contains / and ends with .md)
+      const isTopic = hash.includes('/') && hash.endsWith('.md');
+      if (isTopic) {
         const exists = chapters.some(ch => ch.topics.some(t => t.path === hash));
         if (exists) { loadTopic(hash); return; }
       }
+
+      // Otherwise it's an in-page heading anchor — scroll to it
+      const target = document.getElementById(hash);
+      if (target) { target.scrollIntoView({ behavior: 'smooth' }); return; }
+
+      // Unknown hash — ignore, don't navigate away from current content
+      if (document.querySelector('.article')) return;
       showWelcome();
       breadcrumbEl.textContent = 'Select a topic';
     }
