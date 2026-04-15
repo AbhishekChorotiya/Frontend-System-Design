@@ -915,6 +915,20 @@
           });
         });
 
+        // Handle relative .md cross-links (e.g. ./Other-Topic.md)
+        const chapterDir = path.substring(0, path.lastIndexOf('/'));
+        contentEl.querySelectorAll('.article a[href$=".md"]').forEach(a => {
+          if (a.classList.contains('heading-anchor')) return;
+          a.addEventListener('click', (e) => {
+            e.preventDefault();
+            const href = decodeURIComponent(a.getAttribute('href'));
+            const filename = href.replace(/^\.\//, '');
+            const targetPath = chapterDir + '/' + filename;
+            const exists = chapters.some(ch => ch.topics.some(t => t.path === targetPath));
+            if (exists) { loadTopic(targetPath); } else { window.open(REPO_BASE + targetPath, '_blank'); }
+          });
+        });
+
         window.scrollTo({ top: 0 });
       } catch (err) {
         contentEl.innerHTML = `
