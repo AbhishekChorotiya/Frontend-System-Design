@@ -47,6 +47,9 @@
 
       --code-scrollbar-track: #1e293b;
       --code-scrollbar-thumb: #475569;
+      --bg-code-header: #162032;
+      --text-code-lang: #8899b0;
+      --text-line-number: #475569;
 
       color-scheme: light;
     }
@@ -90,6 +93,9 @@
 
       --code-scrollbar-track: #12141a;
       --code-scrollbar-thumb: #3a3d46;
+      --bg-code-header: #0d0f14;
+      --text-code-lang: #6b7280;
+      --text-line-number: #3a3d46;
 
       color-scheme: dark;
     }
@@ -529,15 +535,71 @@
       border: 1px solid var(--border-code-block);
     }
 
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 16px;
+      background: var(--bg-code-header);
+      border-bottom: 1px solid var(--border-code-block);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-code-lang);
+      user-select: none;
+    }
+
+    .code-lang {
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+
+    .copy-btn {
+      background: none;
+      border: 1px solid var(--border-code-block);
+      border-radius: 4px;
+      color: var(--text-code-lang);
+      font-family: inherit;
+      font-size: 0.7rem;
+      padding: 2px 10px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .copy-btn:hover { background: var(--border-code-block); color: var(--text-code-block); }
+    .copy-btn.copied { color: #4ade80; border-color: #4ade80; }
+
     .article pre code {
       display: block;
-      padding: 20px 24px;
+      padding: 16px 0;
       overflow-x: auto;
       font-size: 0.82rem;
       line-height: 1.65;
       background: transparent;
       color: var(--text-code-block);
       border-radius: 0;
+      counter-reset: line;
+    }
+
+    .code-line {
+      display: block;
+      padding: 0 20px 0 0;
+    }
+
+    .code-line::before {
+      counter-increment: line;
+      content: counter(line);
+      display: inline-block;
+      width: 3.5ch;
+      margin-right: 16px;
+      padding-left: 16px;
+      text-align: right;
+      color: var(--text-line-number);
+      user-select: none;
+      font-size: 0.78rem;
     }
 
     .article pre code::-webkit-scrollbar { height: 6px; }
@@ -660,7 +722,8 @@
 
       .article h1 { font-size: 1.5rem; }
       .article h2 { font-size: 1.2rem; margin-top: 36px; }
-      .article pre code { font-size: 0.78rem; padding: 16px; }
+      .article pre code { font-size: 0.78rem; padding: 12px 0; }
+      .code-line::before { width: 2.5ch; margin-right: 10px; padding-left: 10px; font-size: 0.72rem; }
 
       .welcome h2 { font-size: 1.4rem; }
       .welcome-grid { grid-template-columns: 1fr; }
@@ -903,6 +966,40 @@
           cache[path] = md;
         }
         contentEl.innerHTML = `<div class="article">${marked.parse(md)}</div>`;
+
+        // Enhance code blocks: add header (lang + copy) and line numbers
+        contentEl.querySelectorAll('.article pre').forEach(pre => {
+          const code = pre.querySelector('code');
+          if (!code) return;
+
+          // Extract language from class
+          const langClass = Array.from(code.classList).find(c => c.startsWith('language-'));
+          const lang = langClass ? langClass.replace('language-', '') : 'code';
+
+          // Add line numbers by wrapping each line in a span
+          const rawHTML = code.innerHTML;
+          const lines = rawHTML.replace(/\n$/, '').split('\n');
+          code.innerHTML = lines.map(line => `<span class="code-line">${line || ' '}</span>`).join('\n');
+
+          // Create header
+          const header = document.createElement('div');
+          header.className = 'code-header';
+          header.innerHTML = `<span class="code-lang">${lang}</span><button class="copy-btn" aria-label="Copy code"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span></button>`;
+          pre.insertBefore(header, code);
+
+          // Copy handler
+          header.querySelector('.copy-btn').addEventListener('click', function () {
+            const text = code.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+              this.classList.add('copied');
+              this.querySelector('span').textContent = 'Copied!';
+              setTimeout(() => {
+                this.classList.remove('copied');
+                this.querySelector('span').textContent = 'Copy';
+              }, 2000);
+            });
+          });
+        });
 
         // Handle in-article heading anchor clicks
         contentEl.querySelectorAll('.heading-anchor').forEach(a => {
